@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.22/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style media="screen">
+    input {
+outline: 0;
+border-width: 0 0 2px;
+border-color: #F5F5F5
+}
+input:focus {
+border-color: green
+}
+.pointers p{
+  cursor: pointer;
+}
+.pointers p:hover{
+  color:#60C3F9;
+}
+h1 span{
+  text-transform: capitalize;
+}
+    </style>
+  </head>
+
+  <body ng-app="tut">
+
+    <div ng-controller="AppCtrl" layout="vertical" layout-fill style="height:500px;" ng-cloak>
+
+      <section layout="row" flex>
+
+        <md-sidenav
+            class="md-sidenav-left"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-md')"
+            md-whiteframe="2">
+
+          <md-toolbar class="md-theme-indigo">
+            <div class="text-center" style="width:100%;">
+              <h3 style="padding-top:15px;color:white;">Genres</h3>
+            </div>
+          </md-toolbar>
+          <md-content layout-padding ng-controller="LeftCtrl" >
+            <div class="pointers">
+              <p hide show-gt-md ng-repeat="g in genre track by $index" ng-init="tosend.genre=genre[0]" ng-click="tosend.genre=g;genreChanged(tosend.genre)" style="{{tosend.genre==g?'color:#60C3F9;':''}};text-transform: uppercase;
+;font-weight:600;">
+                {{g}}
+              </p>
+            </div>
+
+          </md-content>
+
+        </md-sidenav>
+
+        <md-content flex layout-padding style="padding:0px;background-color:white;overflow-x: hidden">
+          <div class="" style="height:64px;background-color: rgb(63,81,181);width:100%;text-align:center;color:white;">
+            <h3 style="padding-top:5px;">Movie Database</h3>
+          </div>
+          <div class="" style="padding:30px;">
+            <div class="flex-container" style="display: flex;height:25px;" ng-if="genremode!=true">
+
+            <div class="" style="width:100%;">
+              <input type="text" name="" value="" placeholder="Movie Name" style="width:100%;" ng-model="tosend.title">
+            </div>
+            <div class="" style="width:20px;" ng-click="searchmovie()">
+              <svg id="Capa_1" enable-background="new 0 0 515.558 515.558" height="20" viewBox="0 0 515.558 515.558" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
+            </div>
+          </div>
+
+          <div class="">
+            <h4 ng-if="results.length==0" style="margin-top:70px;">Genre Selected - <span>{{tosend.genre}}</span>  </h4>
+            <p ng-if="results.length==0" style="margin-top:30px;">No Movies</p>
+            <div class="row" ng-if="results.length>0">
+              <div class="col-md-3" ng-repeat = "i in results track by $index" class="md-primary md-raised" ng-click="showAdvanced($event,i,$index)" style="margin-top:30px;">
+                <div class="" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+
+                <div class="" style="height:450px;background-image: url({{i.Poster}}); background-repeat: no-repeat;background-position: center; background-size: 100% 100%;">
+
+                </div>
+                <div class="" style="padding:25px 15px;">
+                  <span>
+                    <svg height="15px" viewBox="0 -10 511.98685 511" width="15px" xmlns="http://www.w3.org/2000/svg"><path d="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="{{i.imdbRating/2>0?'red':'grey'}}"/></svg>
+                    <svg height="15px" viewBox="0 -10 511.98685 511" width="15px" xmlns="http://www.w3.org/2000/svg"><path d="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="{{i.imdbRating/2>2?'red':'grey'}}"/></svg>
+                    <svg height="15px" viewBox="0 -10 511.98685 511" width="15px" xmlns="http://www.w3.org/2000/svg"><path d="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="{{i.imdbRating/2>3?'red':'grey'}}"/></svg>
+                    <svg height="15px" viewBox="0 -10 511.98685 511" width="15px" xmlns="http://www.w3.org/2000/svg"><path d="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="{{i.imdbRating/2>4?'red':'grey'}}"/></svg>
+                    <svg height="15px" viewBox="0 -10 511.98685 511" width="15px" xmlns="http://www.w3.org/2000/svg"><path d="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="{{i.imdbRating/2==5?'red':'grey'}}"/></svg>
+                  </span> <br>
+                  <div class="" style="margin-top:20px;">
+                    <span>Year: {{i.Year}}</span> <br>
+                    <span>Genre: {{i.Genre}}</span> <br>
+                    <span>Director: {{i.Director}}</span> <br>
+                    <span>Actors: {{i.Actors}}</span> <br>
+                    <span>Plot: {{ i.Plot | limitTo: 20 }}{{i.Plot.length > 20 ? '...' : ''}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+    </md-content>
+      </section>
+
+    </div>
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.22/angular-material.min.js"></script>
+    <script src="js/index.js"></script>
+
+  </body>
+
+</html>
