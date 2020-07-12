@@ -18,8 +18,6 @@ angular
       else {
         for (var i = 0; i < retrievedData.length; i++) {
           var filter = retrievedData[i].Genre.split(', ');
-          console.log(filter,"llll");
-          console.log(selection);
           var arraycontains = (filter.indexOf(selection) > -1);
           if (arraycontains==true) {
             $scope.results.push(retrievedData[i])
@@ -29,17 +27,12 @@ angular
     };
 
     $scope.searchmovie = function() {
-      console.log("came");
       $scope.results = []
       isThere === false
       var retrievedData = JSON.parse(localStorage.getItem("Movies"));
-      console.log(retrievedData,"retrievedData");
       if (retrievedData!=null) {
         for (var i = 0; i < retrievedData.length; i++) {
           var isThere = retrievedData[i].Title.toLowerCase().includes($scope.tosend.title.toLowerCase())
-          console.log(isThere);
-          console.log(retrievedData[i].Title.toLowerCase());
-          console.log($scope.tosend.title.toLowerCase());
           if (isThere === true) {
             $scope.results.push(retrievedData[i])
             break;
@@ -67,11 +60,9 @@ angular
               localarray.push($scope.results[0])
             }
             if (localarray.length>0) {
-              console.log(localarray,"localarray");
               localStorage.setItem("Movies", JSON.stringify(localarray));
             }
             else if(localarray == null){
-              console.log($scope.results[0],"$scope.results[0]");
               localStorage.setItem("Movies", JSON.stringify($scope.results[0]));
             }
           }
@@ -95,7 +86,6 @@ angular
    .then(function(answer) {
      $scope.status = 'You said the information was "' + answer + '".';
      $scope.results[id] = answer
-     console.log(answer,"retrievedDataobj");
    }, function() {
      $scope.status = 'You cancelled the dialog.';
    });
